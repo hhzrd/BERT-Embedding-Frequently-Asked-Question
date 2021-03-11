@@ -3,13 +3,11 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-05-21 15:31:50
-LastEditTime: 2020-08-13 21:09:16
+LastEditTime: 2021-03-10 18:30:26
 @Description: ES相关操作的类
 
 '''
-from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
-from datetime import datetime
 
 
 class ESCURD(object):
@@ -22,120 +20,6 @@ class ESCURD(object):
         @param {type}
         @Description: 创建索引
         '''
-
-        # 实现中文搜索提示
-        mappings_cn = {
-            "settings": {
-                "index.max_ngram_diff": 10,
-                "number_of_shards": 5,
-                "number_of_replicas": 1,
-                "analysis": {
-                    "filter": {
-                        "local_synonym": {
-                            "type": "synonym",
-                            "synonyms_path": "synonyms/synonym.txt"
-                        },
-                        "edge_ngram_filter": {
-                            "type": "edge_ngram",
-                            "min_gram": 1,
-                            "max_gram": 50
-                        }
-                    },
-                    "analyzer": {
-                        "text_ik": {
-                            "type": "custom",
-                            "tokenizer": "ik_smart",
-                            "filter": ["lowercase"]
-                        },
-                        "text_ik_s": {
-                            "type": "custom",
-                            "tokenizer": "ik_smart",
-                            "filter": [
-                                "lowercase",
-                                "local_synonym"
-                            ]
-                        },
-    
-                        "save_origin_split": {
-                            "type": "custom",
-                            "tokenizer": "standard",
-                            "filter": [
-                                "lowercase"
-                            ]
-                        },
-                        "keyword_cn": {
-                            "type": "custom",
-                            "tokenizer": "keyword",
-                            "filter": [
-                                "lowercase",
-                                "edge_ngram_filter"
-                            ]
-                        },
-                        "ngram_tokenizer_analyzer": {
-                            "type": "custom",
-                            "tokenizer": "ngram_tokenizer",
-                            "filter": [
-                                "lowercase"
-                            ]
-                        }
-
-                    },
-                    "tokenizer": {
-                        "ngram_tokenizer": {
-                            "type": "ngram",
-                            "min_gram": 1,
-                            "max_gram": 6,
-                            "token_chars": [
-                                "letter",
-                                "digit"]
-                        }
-
-                    }
-                }
-            },
-            "mappings": {
-                "properties": {
-                    "original_question": {
-                        "type": "text",
-                        "analyzer": "save_origin_split",
-                        "search_analyzer": "save_origin_split"
-                    },
-                    "original_question_cn_left": {
-                        "type": "text",
-                        "analyzer": "keyword_cn",
-                        "search_analyzer": "keyword"
-                    },
-                    "original_question_cn_middle": {
-                        "type": "text",
-                        "analyzer": "ngram_tokenizer_analyzer",
-                        "search_analyzer": "keyword"
-                    },
-                    "process_question": {
-                        "type": "text",
-                        "analyzer": "text_ik",
-                        "search_analyzer": "text_ik_s"
-                    },
-                    "answer": {
-                        "type": "text"
-                    },
-                    "q_id": {
-                        "type": "integer"
-                    },
-                    "specific_q_id": {
-                        "type": "integer"
-                    },
-                    "id": {
-                        "type": "integer"
-                    },
-                    "owner_name": {
-                        "type": "keyword"
-                    }
-                }
-            }
-        }
-        
-
-        # 测试
         mappings_cn = {
             "settings": {
                 "index.max_ngram_diff": 10,

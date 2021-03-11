@@ -7,20 +7,24 @@ LastEditors: xiaoyichao
 '''
 import time
 import jieba
-from retrieval_es import SearchData
-from matching_operate import Matching
-from deduplicate_threshold_op import DeduplicateThreshold
-from re_rank import ReRank
-from get_final_data import FinalData
+import configparser
 from sanic import Sanic
 from sanic.response import json
 from sanic import response
-from jieba4befaq import JiebaBEFAQ
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import configparser
-from get_ip import get_host_ip
+os.chdir(sys.path[0])
+sys.path.append("../")
+from common.get_ip import get_host_ip
+from common.kill_program import KillProgram
+from es.es_search_cn import SearchData4Association
+from common.response_add_head import res_with_head
+from faq.jieba4befaq import JiebaBEFAQ
+from faq.retrieval_es import SearchData
+from faq.matching_operate import Matching
+from faq.deduplicate_threshold_op import DeduplicateThreshold
+from faq.re_rank import ReRank
+from faq.get_final_data import FinalData
 
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
@@ -59,6 +63,8 @@ match_ing = Matching()
 rerank = ReRank()
 final_data = FinalData()
 deduplicate_threshold = DeduplicateThreshold()
+killprogram = KillProgram()
+search_data4association = SearchData4Association()
 
 app = Sanic()
 app = Sanic("Feedback BEFAQ")
@@ -141,6 +147,31 @@ async def myfaq(request):
         return json(return_data)
 
 
+@app.route("/associative_questions", methods=["POST", "HEAD"])
+async def associative_questions(request):
+    # 接收到的参数
+    current_question = str(request.form.get("current_question"))
+    limit_num = int(request.form.get("limit_num"))
+    owner_name = str(request.form.get("owner_name"))
+    if_middle = int(request.form.get("if_middle", default=1))
+    if if_middle == 1:
+        if_middle = True
+    elif if_middle == 0:
+        if_middle = False
+    else:
+        if_middle = True
+
+    maybe_original_questions = search_data4association.search_question_cn(
+        owner_name, current_question, limit_num, if_middle)
+
+    answer_json = {}
+    answer_json["code"] = "1"
+    answer_json["msg"] = "OK"
+    answer_json["data"] = {
+        "message": maybe_original_questions}
+    return res_with_head(answer_json)
+
+
 @app.route("/", methods=["GET", "HEAD"])
 async def alibaba_operator_check(request):
     print("alibaba SLB checking server status")
@@ -151,9 +182,9 @@ if __name__ == "__main__":
 
     this_ip = get_host_ip()
     port = int(faq_config["ServerAddress"]["port"])
-    kill_port(port)
+    killprogram.kill_program("main_faq", port)
     # 启动http 服务
     app.run(host=this_ip,
-            port=int(faq_config["ServerAddress"]["port"]),
+            port=port,
             workers=int(faq_config["ServerInfo"]["work_number"]),
             debug=True, access_log=True)
