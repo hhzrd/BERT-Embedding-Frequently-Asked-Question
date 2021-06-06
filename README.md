@@ -43,6 +43,7 @@
     cd model
     wget https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/v0.2/distiluse-base-multilingual-cased.zip
     unzip distiluse-base-multilingual-cased.zip
+    如果最新的模型报错，请到百度网盘中下载
 
 #### 2.4、excel数据格式
     如果你想要先跑通代码尝试一下。可以先不配置自己的数据。
