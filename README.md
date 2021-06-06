@@ -17,19 +17,19 @@
 
 
 ## 如何使用
+### 1、通过docker的方式使用(docker中已经安装Es7.6.1、kibana、IK分词器和同义词功能,BEFAQ的代码也已经包含在docker中。)
+    我们提倡通过docker的方式快速上手，启动方式请参考根目录下的docker文件夹中的README.md
 
-docker方式和非docker方式
-### 1、安装Es7.6.1和配套的kibana，配置Es的IK分词器和同义词功能
-### 1.1、使用docker(其中已经安装Es7.6.1、kibana、IK分词器和同义词功能)
-通过docker的方式来使用ES，IK分词器的自定义词典和同义词功能需要用户进入到docker中来自行添加字典和同义词。
+### 2、通过非docker的方式使用，
 
-#### 1.2、在本机安装Es7.6.1和配套的kibana，配置Es的IK分词器和同义词功能
+
+#### 2.1、在本机安装Es7.6.1和配套的kibana，配置Es的IK分词器和同义词功能
 请参考博客[ES（Elasticsearch）7.6.1安装教程](https://blog.csdn.net/weixin_37792714/article/details/108025200)进行安装。如何已经配置过Es、IK分词器和同义词功能，可以略过这一步。但是记得把同义词同步到你的Es中。为了方便大家。相关文件的下载，都放在了百度网盘中，欢迎大家使用。链接:https://pan.baidu.com/s/1PxgINf6Q1UZBtcsYw6FU0w  密码:4q9h
 
 在BEFAQ中，为了方便大家的使用，我们提供两种Elasticsearch的连接方式：使用用户名和密码的方式与不使用用户名密码的方式。如何修改请参看项目根目录下的es/es.ini 配置文件中的说明。在我们的博客中，我们提供了Elasticsearch配置用户名和密码的方式。
 
 
-### 2、下载项目代码并创建BEFAQ的虚拟环境
+#### 2.2、下载项目代码并创建BEFAQ的虚拟环境
 
     conda create -n befaq python=3.6 -y
     source activate befaq
@@ -37,14 +37,14 @@ docker方式和非docker方式
     进入BEFAQ的根目录，然后
     pip install -r requirements.txt
 
-### 3、sentence-transformers 多语言预训练模型的下载
+#### 2.3、sentence-transformers 多语言预训练模型的下载
 
     首先进入到项目的根目录，然后
     cd model
     wget https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/v0.2/distiluse-base-multilingual-cased.zip
     unzip distiluse-base-multilingual-cased.zip
 
-### 4、excel数据格式
+#### 2.4、excel数据格式
     如果你想要先跑通代码尝试一下。可以先不配置自己的数据。
 
     excel表格请放置在项目根目录下的 data/文件下，例如目前是示例文件名为“线上用户反馈回复.xls” excel数据是QA数据的来源，其中的数据会被写入到Es中。大家下载源码后，可以打开这个文件具体看一下数据示例。
@@ -59,7 +59,7 @@ docker方式和非docker方式
 
     你可以在Excel中写上很多领域的数据，但是具体读取哪些领域的数据，项目根目录下的sheetname.conf中可以配置。
 
-### 5、修改BEFAQ的配置文件
+#### 2.5、修改BEFAQ的配置文件
 
     项目根目录下的data/线上用户反馈回复.xls 是QA数据的来源，其中的数据会被写入到Es中。如果你想要先跑通代码尝试一下。可以先不配置自己的数据。
     项目根目录下的sheetname.conf 是读取Excel文档数据的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
@@ -67,7 +67,7 @@ docker方式和非docker方式
     项目根目录下的faq/befaq_conf.ini 是BEFAQ的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
 
 
-### 6、如何开启BEFAQ服务
+#### 2.6、如何开启BEFAQ服务
 
     进入项目的根目录，然后
     source activate befaq
@@ -114,7 +114,7 @@ docker方式和非docker方式
     ]
 
 
-### 7、如何开启BEFAQ的联想词接口服务
+#### 2.7、如何开启BEFAQ的联想词接口服务
 
     如果想要启动根据当前输入联想问题的功能。
     进入项目根目录，然后
