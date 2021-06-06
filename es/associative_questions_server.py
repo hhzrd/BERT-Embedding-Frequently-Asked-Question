@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-12 08:15:51
-LastEditTime: 2021-03-10 19:06:49
+LastEditTime: 2021-06-06 23:29:05
 @Description: 
 '''
 from sanic import Sanic
@@ -13,7 +13,6 @@ import os
 import sys
 os.chdir(sys.path[0])
 sys.path.append("../")
-from common.get_ip import get_host_ip
 from es.es_search_cn import SearchData4Association
 from common.response_add_head import res_with_head
 
@@ -70,15 +69,13 @@ async def alibaba_operator_check(request):
 
 
 if __name__ == "__main__":
-    this_ip = get_host_ip()
-
     root_config = configparser.ConfigParser()
     root_config.read(os.path.join(
         dir_name, "associative_questions_config.ini"))
 
     kill_port(int(root_config["ServerAddress"]["port"]))
 
-    app.run(host=this_ip,
+    app.run(host="0.0.0.0"
             port=int(root_config["ServerAddress"]["port"]),
             workers=int(root_config["ServerInfo"]["work_number"]),
             debug=True, access_log=True)

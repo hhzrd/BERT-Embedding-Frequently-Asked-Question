@@ -24,12 +24,13 @@ services:
             - discovery.type=single-node
 
     befaq:
-        image: xiaoyichao1993/befaq:v0.2
+        image: xiaoyichao1993/befaq:v1.0-cpu
         container_name: befaq
         links:
             - elasticsearch4befaq
         ports:
             - 8129:8129
+            - 8128:8128
         stdin_open: true
         tty: true
         depends_on:

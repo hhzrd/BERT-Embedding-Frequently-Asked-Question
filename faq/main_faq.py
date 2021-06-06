@@ -15,7 +15,6 @@ import os
 import sys
 os.chdir(sys.path[0])
 sys.path.append("../")
-from common.get_ip import get_host_ip
 from common.kill_program import KillProgram
 from es.es_search_cn import SearchData4Association
 from common.response_add_head import res_with_head
@@ -161,11 +160,10 @@ async def alibaba_operator_check(request):
 
 if __name__ == "__main__":
 
-    this_ip = get_host_ip()
     port = int(faq_config["ServerAddress"]["port"])
     killprogram.kill_program("main_faq", port)
     # 启动http 服务
-    app.run(host=this_ip,
+    app.run(host="0.0.0.0",
             port=port,
             workers=int(faq_config["ServerInfo"]["work_number"]),
             debug=True, access_log=True)

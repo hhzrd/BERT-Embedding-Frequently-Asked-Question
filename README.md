@@ -90,12 +90,12 @@ docker方式和非docker方式
     查看项目运行状态
     ps -ef|grep main_faq.py
 
-    在终端中测试BEFAQ。BEFAQ的服务是post请求。(将xxx.xx.xx.xx替换成自己的ip)
+    在终端中测试BEFAQ。BEFAQ的服务是post请求。(将127.0.0.1替换成自己的ip)
     
-    curl -d "question=忘记原始密码怎么修改密码&get_num=3&threshold=0.5&owner_name=领域3"   http://xxx.xx.xx.xx:8129/BEFAQ
+    curl -d "question=忘记原始密码怎么修改密码&get_num=3&threshold=0.5&owner_name=领域3"   http://127.0.0.1:8129/BEFAQ
     
     接口url:
-    http://xxx.xx.xx.xx:8129/BEFAQ
+    http://127.0.0.1:8129/BEFAQ
     接口参数说明
     question：用户的问题。必需
     get_num：接口最多返回几条数据。非必需，默认为3
@@ -114,23 +114,24 @@ docker方式和非docker方式
     ]
 
 
-### 7、如何开启BEFAQ 的联想词接口服务
+### 7、如何开启BEFAQ的联想词接口服务
 
     如果想要启动根据当前输入联想问题的功能。
     进入项目根目录，然后
     cd es
     python associative_questions_server.py
-
-    查看项目运行状态
-    ps -ef|grep associative_questions_server.py
     或者在后台中启动
     nohup python -u associative_questions_server.py >/dev/null 2>&1 &
 
-    在终端中测试联想功能。服务是post请求。(将xxx.xx.xx.xx替换成自己的ip)
-    curl -d "current_question=设计师&limit_num=3&owner_name=领域1&if_middle=1"  http://xxx.xx.xx.xx:8128/associative_questions
+    查看项目运行状态
+    ps -ef|grep associative_questions_server.py
+
+
+    在终端中测试联想功能。服务是post请求。(如果不是本机，请将127.0.0.1替换成自己的ip)
+    curl -d "current_question=设计师&limit_num=3&owner_name=领域1&if_middle=1"  http://127.0.0.1:8128/associative_questions
     
     接口url:
-    http://xxx.xx.xx.xx:8128/associative_questions
+    http://127.0.0.1:8128/associative_questions
     接口参数说明
     current_question:
     limit_num：接口最多返回几条数据。必需
