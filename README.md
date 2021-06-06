@@ -9,11 +9,8 @@
 <br>（2）使用了Sentence BERT 语义向量（Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks）</br>
 <br>（3）对同义问题有很好的支持</br>
 <br>（4）支持多领域语料（保证了召回的数据是对应领域的，即使是同样的问题，也可以得到不同的答案。）</br>
-<<<<<<< HEAD
 <br>（5）提供了根据当前输入提示联想问题（suggest）功能的接口</br>
-=======
 <br>（5）提供根据当前输入联想问题（输入联想）的功能</br>
->>>>>>> cf85f65f936961204776430b9b990bad92fefcf3
 
 
 ## BEFAQ的框架结构如下图
