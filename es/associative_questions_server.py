@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-12 08:15:51
-LastEditTime: 2021-06-06 23:29:05
+LastEditTime: 2021-06-06 23:54:15
 @Description: 
 '''
 from sanic import Sanic
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     kill_port(int(root_config["ServerAddress"]["port"]))
 
-    app.run(host="0.0.0.0"
+    app.run(host="0.0.0.0",
             port=int(root_config["ServerAddress"]["port"]),
             workers=int(root_config["ServerInfo"]["work_number"]),
             debug=True, access_log=True)
