@@ -14,10 +14,11 @@ from read_excel import ExcelData
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from bert_server.multi_bert_server import MyBert
+from bert_server.sentence_bert_server import SentenceBERT
 
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
+
 
 
 class WriteVec2bin(object):
@@ -25,7 +26,7 @@ class WriteVec2bin(object):
         self.exceldata = ExcelData()
         self.excel_list = self.exceldata.read_QA_data()
         self.sheet_names = self.exceldata.get_sheet_names()
-        self.bc = MyBert()
+        self.sentenceBERT = SentenceBERT()
 
     def write_bert_vecs(self, owner_name, num):
         '''
@@ -47,7 +48,7 @@ class WriteVec2bin(object):
                 f.write(original_question+"\n")
                 orgin_query = original_question.replace("，", " ")
                 orgin_query_list = orgin_query.split(' ')
-                orgin_query_vec = np.array(self.bc.encode(orgin_query_list))
+                orgin_query_vec = self.sentenceBERT.get_bert(orgin_query_list)
                 mean_query_vec = np.mean(
                     orgin_query_vec, axis=0).reshape(1, 512)
                 orgin_query_vecs = np.concatenate(

@@ -3,8 +3,8 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-11 08:42:52
-LastEditTime: 2020-08-15 11:53:39
-@Description: BERT 处理，防止超时后报错。
+LastEditTime: 2021-06-06 21:57:56
+@Description: BERT 处理，防止超时后报错。目前为弃用的状态
 '''
 import numpy as np
 import signal

@@ -9,6 +9,7 @@
 <br>（2）使用了Sentence BERT 语意向量（Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks）</br>
 <br>（3）对同义问题有很好的支持</br>
 <br>（4）支持多领域语料（保证了召回的数据是对应领域的，即使是同样的问题，也可以得到不同的答案。）</br>
+<br>（5）提供根据当前输入联想问题（输入联想）的功能</br>
 
 
 ## BEFAQ的框架结构如下图
@@ -72,11 +73,8 @@ docker方式和非docker方式
     source activate befaq
     cd es
 
-    将数据从excel 写到ES
+    将数据从excel中的数据和Sentence BERT向量写到Es
     python write_data2es.py
-
-    将问题处理成Sentence BERT 向量，保存到bin类型文件中，便于后期读取问题的向量。
-    python write_vecs2bin.py
 
     训练Faiss和Annoy模型
     python train_search_model.py

@@ -80,32 +80,16 @@ async def myfaq(request):
     # 给ES使用的结巴分词
     process_query = jiebaBEFAQ.seg_sentence(
         sentence=orgin_query)
-    print("process_query", process_query)
     query_terms = jieba.cut(process_query)
-    # print("query_terms",query_terms)
     query_word_list = list(query_terms)
-    print("query_word_list", query_word_list)
-
-    begin_time = time.time()
-
-    def print_usetime(query, module):
-        current_time = time.time()
-        use_time = current_time - begin_time
-        if use_time > 1.0:
-            print("time more than 1")
-        print("Q:%s,%s用时%f秒" % (query, module, use_time))
 
     maybe_original_questions, maybe_process_questions, maybe_answers, retrieval_q_ids, specific_q_ids = search_data.search_merge(
         owner_name=owner_name, question=orgin_query, query_word_list=query_word_list, use_faiss=use_faiss, use_annoy=use_annoy, engine_limit_num=engine_num, ES_limit_num=ES_num, use_other_when_es_none=use_other_when_es_none)
-
-    print_usetime(query=orgin_query, module="召回阶段")
-    print(maybe_original_questions)
 
     if len(retrieval_q_ids) > 0:  # ES（或faiss 或 annoy ）中检索到了数据
         # cosine_sim的retrieval_questions使用的maybe_original_questions，orgin_query使用的没有处理过的query
         consin_sim = match_ing.cosine_sim(
             orgin_query=orgin_query, retrieval_questions=maybe_original_questions, owner_name=owner_name)
-        print_usetime(query=orgin_query, module="Matching cosine_sim")
         print("consin_sim:", consin_sim)
 
         # jaccard_sim的retrieval_questions使用的maybe_process_questions,orgin_query使用的是去掉停用词的query
@@ -132,15 +116,12 @@ async def myfaq(request):
 
         high_confidence_q_id_pos = deduplicate_threshold.dedu_thr(
             q_ids=retrieval_q_ids, re_rank_sim_list=re_rank_sim, threshold=threshold)
-        print_usetime(query=orgin_query, module="Deduplicate and Threshold")
         print("high_confidence_q_id_pos:", high_confidence_q_id_pos)
-
-        begin_time = time.time()
 
         return_data = final_data.get_qa(
             high_confidence_q_id_pos, maybe_original_questions, maybe_answers, re_rank_sim=re_rank_sim, get_num=get_num, retrieval_q_ids=retrieval_q_ids, specific_q_ids=specific_q_ids)
 
-        print(return_data)
+        print("return_data", return_data)
         return json(return_data)
     else:  # ES中没有检索到数据
         return_data = []
