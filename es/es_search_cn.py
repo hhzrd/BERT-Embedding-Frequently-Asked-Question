@@ -3,14 +3,17 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-12 07:19:00
-LastEditTime: 2020-08-14 14:28:32
+LastEditTime: 2021-03-10 19:05:51
 @Description: 用于实现搜索框的中文提示词的类
 '''
-
-from es_operate import ESCURD
 from elasticsearch import Elasticsearch
 import configparser
 import os
+import sys
+os.chdir(sys.path[0])
+sys.path.append("../")
+from es.es_operate import ESCURD
+
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
 es_config = configparser.ConfigParser()
@@ -30,11 +33,10 @@ else:
     es_connect = Elasticsearch(
         es_server_ip_port)
 
-    
 es_faq = ESCURD(es_connect)
 
 
-class SearchData(object):
+class SearchData4Association(object):
     # 实现搜索框的中文提示词的类
     def search_question_cn(self, owner_name, current_question, limit_num, if_middle):
         current_question = current_question.lower()
@@ -48,7 +50,6 @@ class SearchData(object):
         hits = retrieve_results["hits"]
         maybe_original_questions = []
         q_ids = []
-        print("max_result_len", max_result_len)
         if limit_num < max_result_len:
             result_len = limit_num
         else:
@@ -67,9 +68,3 @@ class SearchData(object):
                 deduplication_maybe_questions.append(maybe_original_question)
 
         return deduplication_maybe_questions
-
-
-# if __name__ == "__main__":
-#     search_data = SearchData()
-#     maybe_original_questions = search_data.search_question_cn(owner_name="测试用副本", current_question="设计师", limit_num=3,if_middle="True")
-#     print(maybe_original_questions)

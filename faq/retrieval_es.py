@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-01-02 16:55:23
-LastEditTime: 2020-08-15 16:00:17
+LastEditTime: 2021-06-06 21:53:03
 @Description: 使用ES召回数据和Faiss(annoy)召回数据
 
 '''
@@ -12,13 +12,13 @@ from elasticsearch import Elasticsearch
 from annoy import AnnoyIndex
 import numpy as np
 import faiss
-from get_question_vecs import ReadVec2bin
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from es.es_operate import ESCURD
 import configparser
-from bert_server.multi_bert_server import MyBert
+from bert_server.sentence_bert_server import SentenceBERT
+from faq.get_question_vecs import ReadVec2bin
 
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
@@ -41,7 +41,7 @@ else:
         es_server_ip_port)
 
 es_faq = ESCURD(es_connect)
-bc = MyBert()
+sentenceBERT = SentenceBERT()
 read_vec2bin = ReadVec2bin()
 
 
@@ -95,7 +95,7 @@ class SearchData(object):
         sentences = read_vec2bin.read_bert_sents(owner_name=owner_name)
         annoy_index_path = os.path.join(
             dir_name, '../es/search_model/%s_annoy.index' % owner_name)
-        encodearrary = np.array(bc.encode([question]))
+        encodearrary = self.sentenceBERT.get_bert([question])
         tc_index = AnnoyIndex(f=512, metric='angular')
         tc_index.load(annoy_index_path)
         items = tc_index.get_nns_by_vector(

@@ -1,9 +1,9 @@
 # coding=UTF-8
 '''
 @Author: xiaoyichao
-@LastEditors: xiaoyichao
+LastEditors: xiaoyichao
 @Date: 2020-03-24 13:25:41
-@LastEditTime: 2020-06-15 02:50:35
+LastEditTime: 2021-06-06 21:13:52
 @Description:  用于写入ES的process_question字段时去掉同义词。比如，怎样，如何这些词。
 '''
 import jieba
@@ -19,7 +19,7 @@ class StopwordsBEFAQ(object):
         return set(stopwords)
 
     # 对句子进行分词
-    def seg_sentence4faq(self, sentence ):
+    def seg_sentence4faq(self, sentence):
         #  创建用户字典
         userdict = os.path.join(dir_name, 'userdict.txt')
         jieba.load_userdict(userdict)
@@ -34,7 +34,8 @@ class StopwordsBEFAQ(object):
                     outstr += word
                     outstr += ""  # 分隔符号
         return outstr
-    def seg_sentence4customer_service(self, sentence ):
+
+    def seg_sentence4customer_service(self, sentence):
         #  创建用户字典
         userdict = os.path.join(dir_name, 'userdict.txt')
         jieba.load_userdict(userdict)
@@ -45,13 +46,8 @@ class StopwordsBEFAQ(object):
         outstr = ""  # 分隔符号
         for word in sentence_seged:
             # if word not in stopwords:
-                if word != '\t':
-                    outstr += word
-                    outstr += ""  # 分隔符号
+            if word != '\t':
+                outstr += word
+                outstr += ""  # 分隔符号
         return outstr
 
-# if __name__ == '__main__':
-#     stopwords = StopwordsBEFAQ()
-#     line = "下拉刷新的时候有个bug"
-#     line_seg = stopwords.seg_sentence(line)
-#     print(line_seg)

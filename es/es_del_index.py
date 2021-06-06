@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-01-02 16:55:23
-LastEditTime: 2020-08-21 17:49:09
+LastEditTime: 2021-06-06 21:54:28
 @Description: 删除ES的索引， del_index_name 是要删除的索引的名字
 
 '''
@@ -13,13 +13,9 @@ from elasticsearch import Elasticsearch
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import configparser
-import create_connection
-import json
 import os
 import sys
-import datetime
 
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
@@ -45,6 +41,6 @@ else:
 
 es_faq = ESCURD(es_connect)
 
-# if __name__ == "__main__":
-#     es_faq.del_index(index_name=index_name_1)
-#     es_faq.del_index(index_name=index_name_2)
+if __name__ == "__main__":
+    es_faq.del_index(index_name=index_name_1)
+    es_faq.del_index(index_name=index_name_2)

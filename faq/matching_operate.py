@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-05-12 20:46:56
-LastEditTime: 2021-02-23 17:47:30
+LastEditTime: 2021-06-06 21:34:05
 @Description: 
 '''
 import numpy as np
@@ -51,14 +51,14 @@ class Matching(object):
         orgin_query_vec = get_bert(sentence_list=orgin_query_list)
         if orgin_query_vec != []:  # 如果BERT服务正常
             end_time = time.time()
-            print('BERT:', end_time-begin_time)
+            # print('BERT:', end_time-begin_time)
 
             mean_query_vec = orgin_query_vec
 
             begin_time = time.time()
             mean_query_vec = np.mean(orgin_query_vec, axis=0).reshape(1, 512)
             end_time = time.time()
-            print('np.mean:', end_time-begin_time)
+            # print('np.mean:', end_time-begin_time)
 
             begin_time = time.time()
             retrieval_questions_vec = []
@@ -69,20 +69,20 @@ class Matching(object):
                 retrieval_question_vec = retrieval_question_vec.reshape(1, 512)
                 retrieval_questions_vec.append(retrieval_question_vec)
             end_time = time.time()
-            print('MBERT:', end_time-begin_time)
+            # print('MBERT:', end_time-begin_time)
 
             begin_time = time.time()
             retrieval_questions_vec = np.array(
                 retrieval_questions_vec).reshape(-1, 512)
             end_time = time.time()
-            print('reshape:', end_time-begin_time)
+            # print('reshape:', end_time-begin_time)
 
             begin_time = time.time()
             # 计算出来的余弦相似度可能与理论值不一致，这是计算机存储机制导致的。通过四舍五入和异常处理，来规避异常数据出现在最后的结果中。
             sim_list = cosine_similarity(
                 mean_query_vec, retrieval_questions_vec)[0].tolist()
             end_time = time.time()
-            print('SKlearn:', end_time-begin_time)
+            # print('SKlearn:', end_time-begin_time)
             normalized_sim_list = []
             for sim in sim_list:
                 if sim > 1:
