@@ -1,6 +1,7 @@
 # docker 方式启动程序
 
 ## 1、启动docker集群
+    首先请根据自己的系统安装docker-compose，然后才能启动docker-compose。
     交互方式启动
     docker-compose up
     后台方式启动

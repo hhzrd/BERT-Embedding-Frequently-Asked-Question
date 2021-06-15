@@ -13,7 +13,7 @@
 
 
 ## BEFAQ的框架结构如下图
-![image](https://github.com/hhzrd/BEFAQ/blob/master/image/BEFAQ%20%E6%A1%86%E6%9E%B6.png)
+![image](https://github.com/hhzrd/BERT-Embedding-Frequently-Asked-Question/blob/xiao/docker/image/BEFAQ%20%E6%A1%86%E6%9E%B6.png)
 
 
 ## 如何使用
