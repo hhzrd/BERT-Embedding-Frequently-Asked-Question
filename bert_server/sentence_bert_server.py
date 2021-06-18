@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-11 08:42:52
-LastEditTime: 2021-06-06 21:57:30
+LastEditTime: 2021-06-18 15:20:01
 @Description:   获取SentenceBERT的向量
 '''
 
@@ -32,7 +32,7 @@ class SentenceBERT(object):
         self.model = SentenceTransformer(Sentence_BERT_path)
         if torch.cuda.is_available():
             self.model = self.model.to(torch.device("cuda"))
-        print("Sentenence BERT使用的设备为：" % self.model.device)
+        print("Sentenence BERT使用的设备为：%s" % self.model.device)
 
     def normalize(self, vec):
         '''
@@ -67,8 +67,8 @@ class SentenceBERT(object):
 
 
 # # # 测试demo
-# if __name__ == '__main__':
-#     sentenceBERT = SentenceBERT()
-#     sentences_vec = sentenceBERT.get_bert(sentence_list=["hi", "你好"])
-#     print(sentences_vec.shape)
-#     print(sentences_vec)
+if __name__ == '__main__':
+    sentenceBERT = SentenceBERT()
+    sentences_vec = sentenceBERT.get_bert(sentence_list=["hi", "你好"])
+    print(sentences_vec.shape)
+    print(sentences_vec)
