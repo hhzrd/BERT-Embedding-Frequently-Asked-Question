@@ -18,7 +18,7 @@ import configparser
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
 es_config = configparser.ConfigParser()
-es_config.read(os.path.join(dir_name, "es.ini"))
+es_config.read(os.path.join(dir_name, "../config/es.ini"))
 es_server_ip_port = es_config["ServerAddress"]["es_server_ip_port"]
 
 

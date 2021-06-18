@@ -63,7 +63,7 @@
 #### 2.5、修改BEFAQ的配置文件
 
     项目根目录下的data/线上用户反馈回复.xls 是QA数据的来源，其中的数据会被写入到Es中。如果你想要先跑通代码尝试一下。可以先不配置自己的数据。
-    项目根目录下的sheetname.conf 是读取Excel文档数据的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
+    项目根目录下的config文件夹下sheetname.conf 是读取Excel文档数据的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
     项目根目录下的es/es.ini 是BEFAQ关于ES的配置文件。这个配置文件即使是想要先跑通代码尝试一下，也是需要修改的。这个配置文件里需要配置Es的IP（域名）和端口号，Es的登陆的用户名和密码。一定要根据自己的Es的配置进行修改，才能让BEFAQ连接上你的Es。
     项目根目录下的faq/befaq_conf.ini 是BEFAQ的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
 
@@ -84,6 +84,8 @@
     cd faq
 
     启动BEFAQ服务 （如果数据没有发生变化，后期启动服务只需要进行这一步）
+    进入项目的根目录(cd ..)，然后
+    cd src
     python main_faq.py
     或者在后台中启动
     nohup python -u main_faq.py > "logs/log$(date +"%Y-%m-%d-%H").txt" 2>&1 &
@@ -93,7 +95,7 @@
 
     在终端中测试BEFAQ。BEFAQ的服务是post请求。(将127.0.0.1替换成自己的ip)
     
-    curl -d "question=忘记原始密码怎么修改密码&get_num=3&threshold=0.5&owner_name=领域3"   http://127.0.0.1:8129/BEFAQ
+    curl -d "question=忘记原始密码如何修改密码？&get_num=3&threshold=0.5&owner_name=领域1"   http://127.0.0.1:8129/BEFAQ
     
     接口url:
     http://127.0.0.1:8129/BEFAQ
@@ -119,7 +121,7 @@
 
     如果想要启动根据当前输入联想问题的功能。
     进入项目根目录，然后
-    cd es
+    cd src
     python associative_questions_server.py
     或者在后台中启动
     nohup python -u associative_questions_server.py >/dev/null 2>&1 &

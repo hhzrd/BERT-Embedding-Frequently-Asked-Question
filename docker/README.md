@@ -15,17 +15,21 @@
 ## 3、启动BEFAQ服务
     进入项目根目录
     cd /projects/BERT-Embedding-Frequently-Asked-Question/
-    进入faq文件夹
-    cd faq
+    进入src文件夹
+    cd src
     python main_faq.py
     或者在后台中启动
     nohup python -u main_faq.py > "logs/log$(date +"%Y-%m-%d-%H").txt" 2>&1 &
+    在终端中测试联想功能。服务是post请求。(如果不是本机，请将127.0.0.1替换成自己的ip)
+    curl -d "question=忘记原始密码如何修改密码？&get_num=3&threshold=0.5&owner_name=领域1"   http://127.0.0.1:8129/BEFAQ
 ## 4、启动BEFAQ的联想词接口服务
     cd /projects/BEFAQ
-    cd es
+    cd src
     python associative_questions_server.py
     或者在后台中启动
     nohup python -u associative_questions_server.py >/dev/null 2>&1 &
+    在终端中测试联想功能。服务是post请求。(如果不是本机，请将127.0.0.1替换成自己的ip)
+    curl -d "current_question=设计师&limit_num=3&owner_name=领域1&if_middle=1"  http://127.0.0.1:8128/associative_questions
 ## 5、测试接口
     请参考项目根目录下的README.md
     

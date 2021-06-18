@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-01-02 16:55:23
-LastEditTime: 2021-06-06 21:53:03
+LastEditTime: 2021-06-18 16:00:32
 @Description: 使用ES召回数据和Faiss(annoy)召回数据
 
 '''
@@ -23,7 +23,7 @@ from faq.get_question_vecs import ReadVec2bin
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
 es_config = configparser.ConfigParser()
-es_config.read(os.path.join(dir_name, "../es/es.ini"))
+es_config.read(os.path.join(dir_name, "../config/es.ini"))
 es_server_ip_port = es_config["ServerAddress"]["es_server_ip_port"]
 
 
@@ -95,9 +95,11 @@ class SearchData(object):
         sentences = read_vec2bin.read_bert_sents(owner_name=owner_name)
         annoy_index_path = os.path.join(
             dir_name, '../es/search_model/%s_annoy.index' % owner_name)
-        encodearrary = self.sentenceBERT.get_bert([question])
+        encodearrary = sentenceBERT.get_bert([question])
         tc_index = AnnoyIndex(f=512, metric='angular')
         tc_index.load(annoy_index_path)
+        # items = tc_index.get_nns_by_vector(
+        #     encodearrary[0], num, include_distances=True)
         items = tc_index.get_nns_by_vector(
             encodearrary[0], num, include_distances=True)
         sim_questions = [sentences[num_annoy] for num_annoy in items[0]]
@@ -115,7 +117,7 @@ class SearchData(object):
         faiss_index_path = os.path.join(
             dir_name, '../es/search_model/%s_faiss.index' % owner_name)
         index = faiss.read_index(faiss_index_path)
-        question_vec = np.array(bc.encode([question])).astype('float32')
+        question_vec = sentenceBERT.get_bert([question]).astype('float32')
         index.nprobe = 1
         sims, index_nums = index.search(question_vec, num)
         sim_questions = [sentences[num_faiss] for num_faiss in index_nums[0]]

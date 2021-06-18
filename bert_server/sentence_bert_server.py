@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-11 08:42:52
-LastEditTime: 2021-06-18 15:20:01
+LastEditTime: 2021-06-18 17:41:43
 @Description:   获取SentenceBERT的向量
 '''
 
@@ -16,7 +16,7 @@ from sentence_transformers import SentenceTransformer
 dir_name = os.path.abspath(os.path.dirname(__file__))
 
 faq_config = configparser.ConfigParser()
-faq_config.read(os.path.join(dir_name, "../faq/befaq_conf.ini"))
+faq_config.read(os.path.join(dir_name, "../config/befaq_conf.ini"))
 Sentence_BERT_path = os.path.join(dir_name, "../", str(
     faq_config["AlgorithmConfiguration"]["Sentence_BERT_path"]))
 
@@ -53,9 +53,9 @@ class SentenceBERT(object):
         '''
         sentences_vec = []
         sentences_vec = np.array(self.model.encode(sentence_list))
-        sentences_vec_mean = np.mean(sentences_vec, axis=0).reshape(-1, 512)[0]
-        # sentences_vec_max = np.max(sentences_vec, axis=0).reshape(-1, 512)[0]
-        return self.normalize(sentences_vec_mean)
+        sentences_vec_mean = np.mean(sentences_vec, axis=0).reshape(-1, 512)
+        # sentences_vec_max = np.max(sentences_vec, axis=0).reshape(-1, 512)
+        return np.array([self.normalize(sentences_vec_mean[0])])
 
     def get_object(self):
         '''
