@@ -20,7 +20,7 @@
 ### 1、通过docker的方式使用(docker中已经安装Es7.6.1、kibana、IK分词器和同义词功能,BEFAQ的代码也已经包含在docker中。)
     我们提倡通过docker的方式快速上手，启动方式请参考根目录下的docker文件夹中的README.md
 
-### 2、通过非docker的方式使用，
+### 2、通过非docker的方式使用
 
 
 #### 2.1、在本机安装Es7.6.1和配套的kibana，配置Es的IK分词器和同义词功能
