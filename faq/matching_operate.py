@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-05-12 20:46:56
-LastEditTime: 2021-06-25 14:45:41
+LastEditTime: 2021-06-25 16:08:05
 @Description: 
 '''
 import numpy as np
@@ -66,8 +66,8 @@ class Matching(object):
             # print('SKlearn:', end_time-begin_time)
             normalized_sim_list = []
             for sim in sim_list:
-                if sim > 1:
-                    sim = 1
+                if sim > 1.0:
+                    sim = 1.0
                 normalized_sim_list.append(sim)
 
             return normalized_sim_list
