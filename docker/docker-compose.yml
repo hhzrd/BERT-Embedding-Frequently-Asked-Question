@@ -1,7 +1,7 @@
 version: '3.1'
 services:
     kibana:
-        image: xiaoyichao1993/kibana-7.6.1:v1.2
+        image: xiaoyichao1993/kibana-7.6.1:latest
         container_name: kibana4befaq
         links:
             - elasticsearch4befaq
@@ -9,7 +9,7 @@ services:
             - 5601:5601
 
     elasticsearch4befaq:
-        image: xiaoyichao1993/es7-befaq:v3.4.3
+        image: xiaoyichao1993/es7-befaq:latest
         container_name: es4befaq
         cap_add:
             - IPC_LOCK
@@ -24,7 +24,7 @@ services:
             - discovery.type=single-node
 
     befaq:
-        image: xiaoyichao1993/befaq:v1.0-cpu
+        image: xiaoyichao1993/befaq:latest
         container_name: befaq
         links:
             - elasticsearch4befaq
