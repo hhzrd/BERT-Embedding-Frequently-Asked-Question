@@ -43,7 +43,7 @@
     cd model
     wget https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/v0.2/distiluse-base-multilingual-cased.zip
     unzip distiluse-base-multilingual-cased.zip
-    如果最新的模型报错，请到百度网盘中下载老版本的模型
+    如果使用最新的模型报错（并且sentence_transformers==0.3.0），请到百度网盘中下载老版本的模型（适配sentence_transformers==0.3.0）。目前BEFAQ使用的sentence_transformers已经升级到1.2.0版本号。
 
 #### 2.4、excel数据格式
     如果你想要先跑通代码尝试一下。可以先不配置自己的数据。
@@ -112,14 +112,14 @@
             "specific_q_id": 3,
             "question": "如何评价设计师",
             "answer": "你好。点击认证设计师头像，进入TA的个人主页，点击左下角「评价」即可进行评价。此外，设计师的荣耀值是根据设计师的站内数据综合计算，无法直接打分的哦。感谢你的支持。",
-            "confidence": 0.97
+            "confidence": 1.0
         },
         {
             "q_id": 6,
             "specific_q_id": 7,
             "question": "怎样把个人设计师转成机构设计师",
             "answer": "你好，可以登录好好住官网，再次点击提交设计师认证资料，即可重新修改哟；",
-            "confidence": 0.56
+            "confidence": 0.6
         }
     ]
 
