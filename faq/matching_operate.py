@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-05-12 20:46:56
-LastEditTime: 2021-06-18 17:39:47
+LastEditTime: 2021-06-25 14:45:41
 @Description: 
 '''
 import numpy as np
@@ -47,13 +47,13 @@ class Matching(object):
 
         orgin_query_vec = self.sentenceBERT.get_bert(
             sentence_list=orgin_query_list)
-        if orgin_query_vec != []:  # 如果BERT服务正常
+        if orgin_query_vec != np.array([]):  # 如果BERT服务正常
             retrieval_questions_vec = []
             for retrieval_question in retrieval_questions:
                 # 获取事先计算好的问题BERT 向量
                 index_pos = sentences.index(retrieval_question)
                 retrieval_question_vec = bert_vecs[index_pos]
-                retrieval_question_vec = retrieval_question_vec.reshape(1, 512)
+                retrieval_question_vec = retrieval_question_vec.reshape(-1, 512)
                 retrieval_questions_vec.append(retrieval_question_vec)
 
             retrieval_questions_vec = np.array(
@@ -144,3 +144,11 @@ class Matching(object):
             sim = 1 - edit_distance * 1.0 / max_len
             sim_list.append(sim)
         return sim_list
+
+
+if __name__ == "__main__":
+    matching = Matching()
+    question = "如何评价设计师"
+    normalized_sim_list = matching.cosine_sim(
+        question, ["如何评价设计师"], "领域1")
+    print(normalized_sim_list)

@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-09 14:45:34
-LastEditTime: 2020-08-15 18:36:24
+LastEditTime: 2021-06-25 15:04:53
 @Description: 获取问题集合的BERT向量
 '''
 
@@ -26,7 +26,7 @@ class ReadVec2bin(object):
         self.owner_name_bert_vecs = {}
         for sheet_name in sheet_names:
             bert_vecs_path = os.path.join(
-                dir_name, './bert_vect/%s_bert_vecs.bin' % (sheet_name))
+                dir_name, './bert_vect/%s_bert_vecs.npy' % (sheet_name))
             bert_sentences_path = os.path.join(
                 dir_name, './bert_vect/%s_bert_sentences.txt' % (sheet_name))
 
@@ -35,9 +35,7 @@ class ReadVec2bin(object):
                 sentences = sentences.strip("\n")
                 sentences = sentences.split("\n")
             self.owner_name_sentence[sheet_name] = sentences[1:]
-
-            bert_vecs = np.fromfile(bert_vecs_path, dtype=np.float)
-            bert_vecs = bert_vecs.reshape((-1, 512))
+            bert_vecs = np.load(bert_vecs_path)
             self.owner_name_bert_vecs[sheet_name] = bert_vecs[1:]
 
     def read_bert_sents(self, owner_name):

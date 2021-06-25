@@ -69,6 +69,6 @@ class SentenceBERT(object):
 # # # 测试demo
 if __name__ == '__main__':
     sentenceBERT = SentenceBERT()
-    sentences_vec = sentenceBERT.get_bert(sentence_list=["hi", "你好"])
+    sentences_vec = sentenceBERT.get_bert(sentence_list=["如何评价设计师"])
     print(sentences_vec.shape)
     print(sentences_vec)

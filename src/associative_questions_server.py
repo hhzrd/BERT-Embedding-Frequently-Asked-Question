@@ -70,4 +70,4 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0",
             port=port,
             workers=int(root_config["ServerInfo"]["work_number"]),
-            debug=True, access_log=True)
+            debug=False, access_log=False)
