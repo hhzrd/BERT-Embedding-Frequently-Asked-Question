@@ -43,7 +43,7 @@
     cd model
     wget https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/v0.2/distiluse-base-multilingual-cased.zip
     unzip distiluse-base-multilingual-cased.zip
-    如果使用最新的模型报错（并且sentence_transformers==0.3.0），请到百度网盘中下载老版本的模型（适配sentence_transformers==0.3.0）。目前BEFAQ使用的sentence_transformers已经升级到1.2.0版本号。
+    如果使用最新的模型报错（并且sentence_transformers==0.3.0），请到百度网盘中下载老版本的模型（适配sentence_transformers==0.3.0,transformers==3.0.2）。目前BEFAQ使用的sentence_transformers已经升级到1.2.0版本号。
 
 #### 2.4、excel数据格式
     如果你想要先跑通代码尝试一下。可以先不配置自己的数据。
