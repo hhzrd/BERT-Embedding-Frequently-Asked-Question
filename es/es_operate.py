@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-05-21 15:31:50
-LastEditTime: 2021-03-10 18:30:26
+LastEditTime: 2021-06-18 15:52:23
 @Description: ES相关操作的类
 
 '''
@@ -51,7 +51,7 @@ class ESCURD(object):
                                 "local_synonym"
                             ]
                         },
-    
+
                         "save_origin_split": {
                             "type": "custom",
                             "tokenizer": "standard",
@@ -130,8 +130,7 @@ class ESCURD(object):
             }
         }
 
-
-        if self.es.indices.exists(index=index_name) == True:
+        if self.es.indices.exists(index=index_name) is True:
             print("索引 %s 之前已经存在" % index_name)
         else:
             self.es.indices.create(index=index_name, body=mappings_cn)
@@ -139,7 +138,7 @@ class ESCURD(object):
 
     def del_index(self, index_name):
         # 删除索引
-        if self.es.indices.exists(index=index_name) == True:
+        if self.es.indices.exists(index=index_name) is True:
             res = self.es.indices.delete(index_name)
             print("删除索引:", index_name)
             return res
@@ -296,7 +295,7 @@ class ESCURD(object):
             }
         }
 
-        doc["_source"] = ["q_id", "specific_q_id","process_question",
+        doc["_source"] = ["q_id", "specific_q_id", "process_question",
                           "original_question", "answer"]
 
         print("ES查询语句：", doc)

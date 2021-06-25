@@ -26,14 +26,16 @@
 #### 2.1、在本机安装Es7.6.1和配套的kibana，配置Es的IK分词器和同义词功能
     请参考博客[ES（Elasticsearch）7.6.1安装教程](https://blog.csdn.net/weixin_37792714/article/details/108025200)进行安装。如何已经配置过Es、IK分词器和同义词功能，可以略过这一步。但是记得把同义词同步到你的Es中。为了方便大家。相关文件的下载，都放在了百度网盘中，欢迎大家使用。链接:https://pan.baidu.com/s/1PxgINf6Q1UZBtcsYw6FU0w  密码:4q9h
 
-    在BEFAQ中，为了方便大家的使用，我们提供两种Elasticsearch的连接方式：使用用户名和密码的方式与不使用用户名密码的方式。如何修改请参看项目根目录下的es/es.ini 配置文件中的说明。在我们的博客中，我们提供了Elasticsearch配置用户名和密码的方式。
+
+在BEFAQ中，为了方便大家的使用，我们提供两种Elasticsearch的连接方式：使用用户名和密码的方式与不使用用户名密码的方式。如何修改请参看项目根目录下config文件夹的es.ini 配置文件中的说明。在我们的博客中，我们提供了Elasticsearch配置用户名和密码的方式。
+
 
 
 #### 2.2、下载项目代码并创建BEFAQ的虚拟环境
 
     conda create -n befaq python=3.6 -y
     source activate befaq
-    git clone https://github.com/hhzrd/BEFAQ.git
+    git clone https://github.com/hhzrd/BERT-Embedding-Frequently-Asked-Question.git
     进入BEFAQ的根目录，然后
     pip install -r requirements.txt
 
@@ -43,7 +45,7 @@
     cd model
     wget https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/v0.2/distiluse-base-multilingual-cased.zip
     unzip distiluse-base-multilingual-cased.zip
-    如果最新的模型报错，请到百度网盘中下载
+    如果使用最新的模型报错（并且sentence_transformers==0.3.0），请到百度网盘中下载老版本的模型（适配sentence_transformers==0.3.0,transformers==3.0.2）。目前BEFAQ使用的sentence_transformers已经升级到1.2.0版本号。
 
 #### 2.4、excel数据格式
     如果你想要先跑通代码尝试一下。可以先不配置自己的数据。
@@ -58,14 +60,14 @@
 
     同义词，词典，停用词。多个领域共用。词典，停用词是给BEFAQ的jieba分词使用的。同义词是给Es使用的。
 
-    你可以在Excel中写上很多领域的数据，但是具体读取哪些领域的数据，项目根目录下的sheetname.conf中可以配置。
+    你可以在Excel中写上很多领域的数据，但是具体读取哪些领域的数据，项目根目录下config文件夹的sheetname.conf中可以配置。
 
 #### 2.5、修改BEFAQ的配置文件
 
     项目根目录下的data/线上用户反馈回复.xls 是QA数据的来源，其中的数据会被写入到Es中。如果你想要先跑通代码尝试一下。可以先不配置自己的数据。
-    项目根目录下的sheetname.conf 是读取Excel文档数据的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
-    项目根目录下的es/es.ini 是BEFAQ关于ES的配置文件。这个配置文件即使是想要先跑通代码尝试一下，也是需要修改的。这个配置文件里需要配置Es的IP（域名）和端口号，Es的登陆的用户名和密码。一定要根据自己的Es的配置进行修改，才能让BEFAQ连接上你的Es。
-    项目根目录下的faq/befaq_conf.ini 是BEFAQ的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
+    项目根目录下的config文件夹下sheetname.conf 是读取Excel文档数据的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
+    项目根目录下的config文件夹的es.ini 是BEFAQ关于ES的配置文件。这个配置文件即使是想要先跑通代码尝试一下，也是需要修改的。这个配置文件里需要配置Es的IP（域名）和端口号，Es的登陆的用户名和密码。一定要根据自己的Es的配置进行修改，才能让BEFAQ连接上你的Es。
+    项目根目录下的config文件夹的befaq_conf.ini 是BEFAQ的配置文件。如果你想要先跑通代码尝试一下。可以先不修改这里的配置。
 
 
 #### 2.6、如何开启BEFAQ服务
@@ -74,16 +76,18 @@
     source activate befaq
     cd es
 
-    将数据从excel中的数据和Sentence BERT向量写到Es
+    将数据从excel中的数据和Sentence BERT向量写到Es 
     python write_data2es.py
+
+    将问题处理成Sentence BERT 向量，保存到bin类型文件中，便于后期读取问题的向量。
+    python write_vecs2bin.py
 
     训练Faiss和Annoy模型
     python train_search_model.py
 
-    进入项目的根目录(cd ..)，然后
-    cd faq
-
     启动BEFAQ服务 （如果数据没有发生变化，后期启动服务只需要进行这一步）
+    进入项目的根目录(cd ..)，然后
+    cd src
     python main_faq.py
     或者在后台中启动
     nohup python -u main_faq.py > "logs/log$(date +"%Y-%m-%d-%H").txt" 2>&1 &
@@ -93,7 +97,7 @@
 
     在终端中测试BEFAQ。BEFAQ的服务是post请求。(将127.0.0.1替换成自己的ip)
     
-    curl -d "question=忘记原始密码怎么修改密码&get_num=3&threshold=0.5&owner_name=领域3"   http://127.0.0.1:8129/BEFAQ
+    curl -d "question=如何评价设计师&get_num=3&threshold=0.5&owner_name=领域1"   http://127.0.0.1:8129/BEFAQ
     
     接口url:
     http://127.0.0.1:8129/BEFAQ
@@ -106,11 +110,18 @@
     返回的数据格式：
     [
         {
-            "q_id": 5,
-            "specific_q_id": 10,
-            "question": "忘记原始密码如何修改密码？",
-            "answer": "您可在登录界面，密码登录，使用找回密码功能进行验证。",
-            "confidence": 0.99
+            "q_id": 2,
+            "specific_q_id": 3,
+            "question": "如何评价设计师",
+            "answer": "你好。点击认证设计师头像，进入TA的个人主页，点击左下角「评价」即可进行评价。此外，设计师的荣耀值是根据设计师的站内数据综合计算，无法直接打分的哦。感谢你的支持。",
+            "confidence": 1.0
+        },
+        {
+            "q_id": 6,
+            "specific_q_id": 7,
+            "question": "怎样把个人设计师转成机构设计师",
+            "answer": "你好，可以登录好好住官网，再次点击提交设计师认证资料，即可重新修改哟；",
+            "confidence": 0.6
         }
     ]
 
@@ -119,7 +130,7 @@
 
     如果想要启动根据当前输入联想问题的功能。
     进入项目根目录，然后
-    cd es
+    cd src
     python associative_questions_server.py
     或者在后台中启动
     nohup python -u associative_questions_server.py >/dev/null 2>&1 &

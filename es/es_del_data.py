@@ -3,22 +3,21 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-19 19:01:17
-LastEditTime: 2020-08-25 18:03:58
+LastEditTime: 2021-06-25 14:13:35
 @Description: 删除索引，仅供测试。
 '''
 
 from es_operate import ESCURD
 from elasticsearch import Elasticsearch
-
+import configparser
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import create_connection
-import configparser
+
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
 es_config = configparser.ConfigParser()
-es_config.read(os.path.join(dir_name, "es.ini"))
+es_config.read(os.path.join(dir_name, "../config/es.ini"))
 es_server_ip_port = es_config["ServerAddress"]["es_server_ip_port"]
 
 
@@ -39,7 +38,7 @@ else:
 
 es_faq = ESCURD(es_connect)
 
-# if __name__ == "__main__":
-#     owner_names = ["领域1,领域2,领域3"]
-#     for owner_name in owner_names:
-#         es_faq.del_data(index_name, owner_name)
+if __name__ == "__main__":
+    owner_names = ["领域1,领域2,领域3"]
+    for owner_name in owner_names:
+        es_faq.del_data(index_name, owner_name)

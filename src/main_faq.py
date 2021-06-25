@@ -15,7 +15,7 @@ import os
 import sys
 os.chdir(sys.path[0])
 sys.path.append("../")
-from common.kill_program import KillProgram
+from common.kill_program import kill_port
 from es.es_search_cn import SearchData4Association
 from common.response_add_head import res_with_head
 from faq.jieba4befaq import JiebaBEFAQ
@@ -29,7 +29,7 @@ from faq.get_final_data import FinalData
 dir_name = os.path.abspath(os.path.dirname(__file__))
 
 faq_config = configparser.ConfigParser()
-faq_config.read(os.path.join(dir_name, "befaq_conf.ini"))
+faq_config.read(os.path.join(dir_name, "../config/befaq_conf.ini"))
 consine_weight = float(faq_config["AlgorithmConfiguration"]["consine"])
 jaccard_weight = float(faq_config["AlgorithmConfiguration"]["jaccard"])
 BM25_weight = float(faq_config["AlgorithmConfiguration"]["BM25"])
@@ -62,7 +62,6 @@ match_ing = Matching()
 rerank = ReRank()
 final_data = FinalData()
 deduplicate_threshold = DeduplicateThreshold()
-killprogram = KillProgram()
 search_data4association = SearchData4Association()
 
 app = Sanic()
@@ -161,9 +160,9 @@ async def alibaba_operator_check(request):
 if __name__ == "__main__":
 
     port = int(faq_config["ServerAddress"]["port"])
-    killprogram.kill_program("main_faq", port)
+    kill_port(port)
     # 启动http 服务
     app.run(host="0.0.0.0",
             port=port,
             workers=int(faq_config["ServerInfo"]["work_number"]),
-            debug=True, access_log=True)
+            debug=False, access_log=False)

@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-01-02 16:55:23
-LastEditTime: 2020-08-25 18:05:28
+LastEditTime: 2021-06-25 14:12:52
 @Description: 创建一个索引，仅供测试。
 
 '''
@@ -15,7 +15,7 @@ import configparser
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
 es_config = configparser.ConfigParser()
-es_config.read(os.path.join(dir_name, "es.ini"))
+es_config.read(os.path.join(dir_name, "../config/es.ini"))
 es_server_ip_port = es_config["ServerAddress"]["es_server_ip_port"]
 
 
@@ -35,6 +35,6 @@ else:
 
 es_faq = ESCURD(es_connect)
 
-# if __name__ == "__main__":
-#     es_faq.create_index(index_name=index_name_1)
-#     es_faq.create_index(index_name=index_name_2)
+if __name__ == "__main__":
+    es_faq.create_index(index_name=index_name_1)
+    es_faq.create_index(index_name=index_name_2)

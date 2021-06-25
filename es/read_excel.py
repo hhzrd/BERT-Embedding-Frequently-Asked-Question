@@ -3,7 +3,7 @@
 Author: xiaoyichao
 LastEditors: xiaoyichao
 Date: 2020-08-13 11:34:47
-LastEditTime: 2021-03-02 14:28:15
+LastEditTime: 2021-06-18 16:31:16
 Description: 用于读取excel表格的类
 '''
 import os
@@ -19,7 +19,7 @@ class ExcelData(object):
 
     def __init__(self):
         self.excel_config = configparser.ConfigParser()
-        self.excel_config.read(os.path.join(dir_name, "../sheetname.conf"))
+        self.excel_config.read(os.path.join(dir_name, "../config/sheetname.conf"))
         self.sheet_names = self.excel_config["QA_sheets"]["sheets"].split(",")
         self.excel_name = self.excel_config["excel_name"]["name"]
         self.synonyms_sheet = self.excel_config["Synonyms"]["sheet"]

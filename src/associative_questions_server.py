@@ -3,7 +3,7 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-06-12 08:15:51
-LastEditTime: 2021-06-06 23:54:15
+LastEditTime: 2021-06-18 16:28:41
 @Description: 
 '''
 from sanic import Sanic
@@ -15,20 +15,11 @@ os.chdir(sys.path[0])
 sys.path.append("../")
 from es.es_search_cn import SearchData4Association
 from common.response_add_head import res_with_head
+from common.kill_program import kill_port
 
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
 search_data = SearchData4Association()
-
-
-
-
-def kill_port(port):
-
-    find_kill = "kill -9 $(lsof -i:%d -t)" % port
-    print(find_kill)
-    result = os.popen(find_kill)
-    return result.read()
 
 
 # 接口会返回json数据
@@ -71,11 +62,12 @@ async def alibaba_operator_check(request):
 if __name__ == "__main__":
     root_config = configparser.ConfigParser()
     root_config.read(os.path.join(
-        dir_name, "associative_questions_config.ini"))
+        dir_name, "../config/associative_questions_config.ini"))
+    port = int(root_config["ServerAddress"]["port"])
 
-    kill_port(int(root_config["ServerAddress"]["port"]))
+    kill_port(port)
 
     app.run(host="0.0.0.0",
-            port=int(root_config["ServerAddress"]["port"]),
+            port=port,
             workers=int(root_config["ServerInfo"]["work_number"]),
-            debug=True, access_log=True)
+            debug=False, access_log=False)

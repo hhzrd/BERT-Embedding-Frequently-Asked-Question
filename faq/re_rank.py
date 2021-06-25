@@ -16,8 +16,8 @@ class ReRank(object):
             multiple_sims = []
             if consine_weight + jaccard_weight + BM25_weight + edit_distance_weight ==1:
                 for multiple_sim in tmp_multiple_sims:
-                    if multiple_sim > 1:
-                        multiple_sim = 1
+                    if multiple_sim > 1.0:
+                        multiple_sim = 1.0
                     multiple_sims.append(multiple_sim)
             else:
                 multiple_sims = tmp_multiple_sims

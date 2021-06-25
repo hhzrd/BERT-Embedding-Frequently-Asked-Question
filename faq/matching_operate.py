@@ -3,38 +3,35 @@
 @Author: xiaoyichao
 LastEditors: xiaoyichao
 @Date: 2020-05-12 20:46:56
-LastEditTime: 2021-06-06 21:34:05
+LastEditTime: 2021-06-25 16:08:05
 @Description: 
 '''
 import numpy as np
 import jieba
-import math
 import Levenshtein
 import time
 import configparser
-
 from sklearn.metrics.pairwise import cosine_similarity
 from gensim.summarization import bm25
-from get_question_vecs import ReadVec2bin
-from sentence_transformers import SentenceTransformer
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from bert_server.multi_bert_server import get_bert
+os.chdir(sys.path[0])
+sys.path.append("../")
+from faq.get_question_vecs import ReadVec2bin
 from faq.jieba4befaq import JiebaBEFAQ
+from bert_server.sentence_bert_server import SentenceBERT
+
 
 dir_name = os.path.abspath(os.path.dirname(__file__))
-
 faq_config = configparser.ConfigParser()
-faq_config.read(os.path.join(dir_name, "../faq/befaq_conf.ini"))
-Sentence_BERT_path = os.path.join(dir_name, "../", str(
-    faq_config["AlgorithmConfiguration"]["Sentence_BERT_path"]))
+faq_config.read(os.path.join(dir_name, "../config/befaq_conf.ini"))
+
 
 class Matching(object):
     def __init__(self):
         self.read_vec2bin = ReadVec2bin()
-        self.embedder = SentenceTransformer(Sentence_BERT_path)
         self.jiebaBEFAQ = JiebaBEFAQ()
+        self.sentenceBERT = SentenceBERT()
 
     def cosine_sim(self, orgin_query, retrieval_questions, owner_name):
         '''
@@ -47,46 +44,30 @@ class Matching(object):
         orgin_query = orgin_query.replace("，", " ")
         orgin_query_list = orgin_query.split(' ')
         print("orgin_query_list", orgin_query_list)
-        begin_time = time.time()
-        orgin_query_vec = get_bert(sentence_list=orgin_query_list)
-        if orgin_query_vec != []:  # 如果BERT服务正常
-            end_time = time.time()
-            # print('BERT:', end_time-begin_time)
 
-            mean_query_vec = orgin_query_vec
-
-            begin_time = time.time()
-            mean_query_vec = np.mean(orgin_query_vec, axis=0).reshape(1, 512)
-            end_time = time.time()
-            # print('np.mean:', end_time-begin_time)
-
-            begin_time = time.time()
+        orgin_query_vec = self.sentenceBERT.get_bert(
+            sentence_list=orgin_query_list)
+        if orgin_query_vec != np.array([]):  # 如果BERT服务正常
             retrieval_questions_vec = []
             for retrieval_question in retrieval_questions:
                 # 获取事先计算好的问题BERT 向量
                 index_pos = sentences.index(retrieval_question)
                 retrieval_question_vec = bert_vecs[index_pos]
-                retrieval_question_vec = retrieval_question_vec.reshape(1, 512)
+                retrieval_question_vec = retrieval_question_vec.reshape(-1, 512)
                 retrieval_questions_vec.append(retrieval_question_vec)
-            end_time = time.time()
-            # print('MBERT:', end_time-begin_time)
 
-            begin_time = time.time()
             retrieval_questions_vec = np.array(
                 retrieval_questions_vec).reshape(-1, 512)
-            end_time = time.time()
-            # print('reshape:', end_time-begin_time)
 
-            begin_time = time.time()
             # 计算出来的余弦相似度可能与理论值不一致，这是计算机存储机制导致的。通过四舍五入和异常处理，来规避异常数据出现在最后的结果中。
             sim_list = cosine_similarity(
-                mean_query_vec, retrieval_questions_vec)[0].tolist()
-            end_time = time.time()
+                orgin_query_vec, retrieval_questions_vec)[0].tolist()
+
             # print('SKlearn:', end_time-begin_time)
             normalized_sim_list = []
             for sim in sim_list:
-                if sim > 1:
-                    sim = 1
+                if sim > 1.0:
+                    sim = 1.0
                 normalized_sim_list.append(sim)
 
             return normalized_sim_list
@@ -163,3 +144,11 @@ class Matching(object):
             sim = 1 - edit_distance * 1.0 / max_len
             sim_list.append(sim)
         return sim_list
+
+
+if __name__ == "__main__":
+    matching = Matching()
+    question = "如何评价设计师"
+    normalized_sim_list = matching.cosine_sim(
+        question, ["如何评价设计师"], "领域1")
+    print(normalized_sim_list)
