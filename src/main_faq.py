@@ -45,17 +45,6 @@ else:
     use_other_when_es_none = False
 
 
-def kill_port(port):
-
-    find_kill = "kill -9 $(lsof -i:%d -t)" % port
-    try:
-        result = os.popen(find_kill)
-        print("%d端口程序kill 成功" % port)
-        return result.read()
-    except Exception:
-        print("%d端口程序kill 失败" % port)
-
-
 jiebaBEFAQ = JiebaBEFAQ()
 search_data = SearchData()
 match_ing = Matching()

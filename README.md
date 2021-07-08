@@ -91,7 +91,7 @@
     cd src
     python main_faq.py
     或者在后台中启动
-    nohup python -u main_faq.py > "logs/log$(date +"%Y-%m-%d-%H").txt" 2>&1 &
+    nohup python -u main_faq.py > "../logs/log_$(date +"%Y-%m-%d-%H").txt" 2>&1 &
     
     查看项目运行状态
     ps -ef|grep main_faq.py
