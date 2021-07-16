@@ -1,10 +1,3 @@
-<!--
- * @Author: xiaoyichao
- * @LastEditors: xiaoyichao
- * @Date: 2021-07-16 13:49:35
- * @LastEditTime: 2021-07-16 13:49:35
- * @Description: 
--->
 # docker 方式启动程序
 
 ## 1、启动docker集群
