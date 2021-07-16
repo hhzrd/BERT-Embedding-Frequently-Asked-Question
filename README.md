@@ -77,7 +77,7 @@
     source activate befaq
     cd es
 
-    将数据从excel中的数据和Sentence BERT向量写到Es 
+    将数据从excel中的数据写到Es 
     python write_data2es.py
 
     将问题处理成Sentence BERT 向量，保存到bin类型文件中，便于后期读取问题的向量。
@@ -89,6 +89,7 @@
     启动BEFAQ服务 （如果数据没有发生变化，后期启动服务只需要进行这一步）
     进入项目的根目录(cd ..)，然后
     cd src
+    启动BEFAQ服务
     python main_faq.py
     或者在后台中启动
     nohup python -u main_faq.py > "../logs/log_$(date +"%Y-%m-%d-%H").txt" 2>&1 &

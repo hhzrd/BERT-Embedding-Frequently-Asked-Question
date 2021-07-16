@@ -15,8 +15,18 @@
 ## 3、启动BEFAQ服务
     进入项目根目录
     cd /projects/BERT-Embedding-Frequently-Asked-Question/
-    进入src文件夹
-    cd src
+    cd es
+    将数据从excel中的数据写到Es 
+    python write_data2es.py
+
+    将问题处理成Sentence BERT 向量，保存到bin类型文件中，便于后期读取问题的向量。
+    python write_vecs2bin.py
+
+    训练Faiss和Annoy模型
+    python train_search_model.py
+
+    进入src文件夹,启动BEFAQ服务
+    cd ../src
     python main_faq.py
     或者在后台中启动
     nohup python -u main_faq.py > "../logs/log_$(date +"%Y-%m-%d-%H").txt" 2>&1 &
