@@ -26,7 +26,7 @@
     python train_search_model.py
 
     进入src文件夹,启动BEFAQ服务
-    cd src
+    cd ../src
     python main_faq.py
     或者在后台中启动
     nohup python -u main_faq.py > "../logs/log_$(date +"%Y-%m-%d-%H").txt" 2>&1 &
