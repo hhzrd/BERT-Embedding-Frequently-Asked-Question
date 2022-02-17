@@ -5,7 +5,7 @@ annoy==1.16.3
 xlrd==1.2.0
 numpy==1.18.2
 faiss_cpu==1.6.3
-sanic==20.6.3
+sanic==20.12.6
 scikit_learn==0.23.2
 transformers==4.6.1
 python-Levenshtein==0.12.2
